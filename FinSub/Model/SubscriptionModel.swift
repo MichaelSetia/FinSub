@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 
+@Model
 final class SubscriptionModel {
     var id : UUID
     var name: String
