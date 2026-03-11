@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 protocol SubscriptionRepository {
-    func fetchAll() async throws -> [SubscriptionModel]
+    func fetchAllSubscription() async throws -> [SubscriptionModel]
     func addSubscription(_ subscription : SubscriptionModel) async throws
     func deletesubscription(_ subscription : SubscriptionModel) async throws
     func updateSubscription(_ subscription : SubscriptionModel) async throws

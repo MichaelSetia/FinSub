@@ -9,13 +9,15 @@ import Foundation
 import SwiftData
 
 struct SwiftDataSubscriptionRepository : SubscriptionRepository{
+
+    
     private let modelContex : ModelContext
     init(modelContex: ModelContext) {
         self.modelContex = modelContex
     }
     
     func fetchUpcomingSubscription(days: Int) async throws -> [SubscriptionModel] {
-        let all = try await fetchAll()
+        let all = try await fetchAllSubscription()
         let now = Date()
         let endSubs = Calendar.current.date(byAdding: .day,value: days, to: now)
         
@@ -25,14 +27,14 @@ struct SwiftDataSubscriptionRepository : SubscriptionRepository{
     }
     
     func calculateMonthlyCost() async throws -> Decimal {
-        let all = try await fetchAll()
+        let all = try await fetchAllSubscription()
     
         return all.reduce(Decimal(0)) { (result,sub) in
             result + sub.monthlyCost
         }
     }
     
-    func fetchAll() async throws -> [SubscriptionModel] {
+    func fetchAllSubscription() async throws -> [SubscriptionModel] {
         let desctiptor = FetchDescriptor<SubscriptionModel>()
         return try modelContex.fetch(desctiptor)
     }
