@@ -16,14 +16,16 @@ final class SubscriptionModel {
     var startDate : Date
     var billingCycle: BilingCycle
     var category: CategoryModel?
+    var iconName : String?
     
-    init(id: UUID, name: String, price: Decimal, startDate: Date, billingCycle: BilingCycle, category: CategoryModel? = nil) {
+    init(id: UUID, name: String, price: Decimal, startDate: Date, billingCycle: BilingCycle, category: CategoryModel? = nil, iconName: String? = nil) {
         self.id = id
         self.name = name
         self.price = price
         self.startDate = startDate
         self.billingCycle = billingCycle
         self.category = category
+        self.iconName = iconName
     }
     
     var monthlyCost : Decimal {
