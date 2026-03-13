@@ -23,7 +23,7 @@ class BrandDetector : BrandDetectorProtocol {
     
     func buildURL ( params : Brand) -> URL? {
         
-        var path = "/\(params.domain)"
+        let path = "/\(params.domain)"
         
 //        if let width = params.width, let height = params.height {
 //            path += "/w/\(params.width)/h/\(params.height)"

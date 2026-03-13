@@ -16,8 +16,7 @@ struct BrandDomainResolve{
         "disney plus": "disneyplus.com",
         "disney+": "disneyplus.com",
         "hulu": "hulu.com",
-        "hulu plus": "hulu.com",
-        "amazon prime": "amazon.com", // Prime Video
+        "hulu plus": "hulu.com",// Prime Video
         "prime video": "amazon.com",
         "paramount": "paramountplus.com",
         "paramount plus": "paramountplus.com",

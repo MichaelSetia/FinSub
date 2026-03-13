@@ -43,4 +43,14 @@ final class SubscriptionViewModel{
         return brandDetection.buildURL(params: brand)
         
     }
+    
+    func buildLabelLogoUrl (forBrand brand: String) -> URL? {
+        guard let domain = BrandDomainResolve.domain(for: brand )
+                else {return nil}
+        
+        let brand = Brand(domain: domain)
+        
+        return brandDetection.buildURL(params: brand)
+        
+    }
 }
