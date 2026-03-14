@@ -22,10 +22,10 @@ struct ContentView: View {
     var body: some View {
         TabView{
             NavigationStack {
-                ListSubscriptionView(viewModel: viewModel)
+                HomeView(viewModel: viewModel)
             }
             .tabItem{
-               Label("Home", systemImage: "home")
+               Label("Home", systemImage: "circle")
             }
         }
         

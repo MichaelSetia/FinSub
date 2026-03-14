@@ -51,6 +51,30 @@ final class SubscriptionViewModel{
         let brand = Brand(domain: domain)
         
         return brandDetection.buildURL(params: brand)
+    }
+    
+    func deleteSubscription(_ subscription: SubscriptionModel) async {
+        isLoading = true
+        do {
+            try await repository.deletesubscription(subscription)
+            subscriptions.removeAll { $0.id == subscription.id }
+        }
+        catch{
+            messageError = error.localizedDescription
+        }
+        isLoading = false
+    }
+    
+    func addSubscription(name: String, price: Int, date: Date ) async {
+        isLoading = true
+        do {
+//            let subscription = SubscriptionModel( name: name, price: Decimal(price), startDate: date, billingCycle: <#T##BilingCycle#>, category: <#T##CategoryModel?#>, iconName: <#T##String?#>)
+//            subscriptions.append(subscription)
+        }
+        catch {
+            messageError = error.localizedDescription
+        }
+        isLoading = false
         
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum BilingCycle : String, Codable {
+enum BilingCycle : String, Codable, CaseIterable{
     case month
     case yearly
 }

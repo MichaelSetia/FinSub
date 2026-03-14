@@ -18,8 +18,8 @@ final class SubscriptionModel {
     var category: CategoryModel?
     var iconName : String?
     
-    init(id: UUID, name: String, price: Decimal, startDate: Date, billingCycle: BilingCycle, category: CategoryModel? = nil, iconName: String? = nil) {
-        self.id = id
+    init(name: String, price: Decimal, startDate: Date, billingCycle: BilingCycle, category: CategoryModel? = nil, iconName: String? = nil) {
+        self.id = UUID()
         self.name = name
         self.price = price
         self.startDate = startDate
