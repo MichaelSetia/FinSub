@@ -5,7 +5,7 @@ struct CardSubscriptionRow: View {
     
     @Environment(\.modelContext) private var modelContext
     
-    var viewModel: SubscriptionViewModel
+    @Bindable var viewModel: SubscriptionViewModel
     
     var subscription : SubscriptionModel?
     

@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct HomeView: View {
-    var viewModel : SubscriptionViewModel
+    @Bindable var viewModel : SubscriptionViewModel
     var body: some View {
-        VStack{
-            ListSubscriptionView(viewModel: viewModel)
+        VStack (alignment: .leading){
+            ScrollView{
+                ListSubscriptionView(viewModel: viewModel)
+            }
         }
         .task {
             await viewModel.loadSubscription()
@@ -19,9 +21,12 @@ struct HomeView: View {
         .navigationBarTitle("Home")
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
-                NavigationLink ("Add", destination: AddSubscriptionView())
+                NavigationLink(destination: AddSubscriptionView(viewModel: viewModel)) {
+                        Image(systemName: "plus")
+                    }
             }
         }
+        
     }
     
 }

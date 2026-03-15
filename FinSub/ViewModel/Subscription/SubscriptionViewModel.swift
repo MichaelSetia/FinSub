@@ -65,11 +65,12 @@ final class SubscriptionViewModel{
         isLoading = false
     }
     
-    func addSubscription(name: String, price: Int, date: Date ) async {
+    func addSubscription(name: String, price: Int, date: Date, billingCycle: BilingCycle, category: CategoryModel? = nil, iconName: String? = nil ) async {
         isLoading = true
         do {
-//            let subscription = SubscriptionModel( name: name, price: Decimal(price), startDate: date, billingCycle: <#T##BilingCycle#>, category: <#T##CategoryModel?#>, iconName: <#T##String?#>)
-//            subscriptions.append(subscription)
+            let subscription = SubscriptionModel( name: name, price: Decimal(price), startDate: date, billingCycle: billingCycle, category: category, iconName: iconName)
+            try await repository.addSubscription(subscription)
+            subscriptions.append(subscription)
         }
         catch {
             messageError = error.localizedDescription
