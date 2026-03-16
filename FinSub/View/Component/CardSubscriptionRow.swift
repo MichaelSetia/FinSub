@@ -39,8 +39,9 @@ struct CardSubscriptionRow: View {
                     .fontWeight(.bold)
             }
         }
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+//        .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
+        .clipShape(RoundedRectangle(cornerRadius: 10))
         
     }
 }

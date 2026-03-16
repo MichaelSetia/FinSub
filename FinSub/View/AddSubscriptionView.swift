@@ -10,14 +10,12 @@ import SwiftUI
 struct AddSubscriptionView: View {
     @Bindable var viewModel : SubscriptionViewModel
     @State private var name: String = ""
-    @State private var price: Int = 0
-    @State private var date : Date = Date()
+    @State private var price: Decimal = 0
+    @State private var startDate : Date = Date()
     @State private var billingCycle : BilingCycle = .month
     @State private var customCategory: String = ""
     @Environment(\.dismiss) var dismiss
-    let columns = [
-        GridItem(.adaptive(minimum: 110))
-    ]
+    var EditSubscriptionData: SubscriptionModel?
     
     @State private var category: String = "Entertainment"
     let categories = [
@@ -26,6 +24,27 @@ struct AddSubscriptionView: View {
             "Productivity",
             "Other"
         ]
+    
+    let columns = [
+        GridItem(.adaptive(minimum: 110))
+    ]
+    
+    init(viewModel: SubscriptionViewModel, EditSubscriptionData: SubscriptionModel? = nil) {
+         self.viewModel = viewModel
+         self.EditSubscriptionData = EditSubscriptionData
+         
+         if let sub = EditSubscriptionData {
+             _name = State(initialValue: sub.name)
+             _price = State(initialValue: sub.price)
+             _startDate = State(initialValue: sub.startDate)
+             _billingCycle = State(initialValue: sub.billingCycle)
+             
+             
+             let categoryName = sub.category?.name ?? "Entertainment"
+             _category = State(initialValue: categoryName)
+
+         }
+     }
     
     var body: some View {
             VStack(alignment: .leading, spacing: 20){
@@ -65,7 +84,7 @@ struct AddSubscriptionView: View {
                         .cornerRadius(8)
                     
                 }
-                DatePicker("Start Subscription Date", selection: $date)
+                DatePicker("Start Subscription Date", selection: $startDate)
                 
                 HStack{
                     Text("Billing Cycle")
@@ -122,26 +141,38 @@ struct AddSubscriptionView: View {
                         .background(Color(.systemGray6))
                         .cornerRadius(8)
                 }
-                
-                //
-                //
-                //            if categori others {
-                //                add category
-                //            }
-                //
+
                 Spacer()
-                Button("Add Subscription"){
-                    Task{
-                        await viewModel.addSubscription(name: name, price: price, date: date, billingCycle: billingCycle, iconName: name)
-                        dismiss()
-                    }
+                Button((EditSubscriptionData != nil) ? "Update Subscription" : "Add Subscription"){
+                    let categoryModel = CategoryModel(name: category == "Other" ? customCategory : category)
+                            if let sub = EditSubscriptionData {
+                                await viewModel.updateSubscription(
+                                    sub,
+                                    name: name,
+                                    price: price,           // Sekarang Decimal
+                                    startDate: startDate,
+                                    billingCycle: billingCycle, 
+                                    category: categoryModel,
+                                    iconName: name
+                                )
+                            } else {
+                                await viewModel.addSubscription(
+                                    name: name,
+                                    price: price,           // Sekarang Decimal
+                                    date: startDate,
+                                    billingCycle: billingCycle,
+//                                    category: categoryModel,
+                                    iconName: name
+                                )
+                            }
+                            dismiss()
                 }
                 .buttonStyle(.borderedProminent)
                 .buttonSizing(.flexible)
                 .frame(maxWidth: .infinity)
             }
             .padding()
-            .navigationTitle("Add Subscription")
+            .navigationTitle((EditSubscriptionData != nil) ? "Update Subscription" : "Add Subscription")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar(.hidden, for: .tabBar)
         

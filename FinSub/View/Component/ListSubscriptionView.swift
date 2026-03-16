@@ -15,13 +15,35 @@ struct ListSubscriptionView: View {
     @Bindable var viewModel: SubscriptionViewModel
     
     var body: some View {
-        VStack{
-            ForEach(viewModel.subscriptions)   { item in
-                CardSubscriptionRow(viewModel: viewModel, subscription: item)
+        List {
+            ForEach(viewModel.subscriptions, id: \.id) { item in
+                CardSubscriptionRow(
+                    viewModel: viewModel,
+                    subscription: item
+                )
+                .listRowInsets(EdgeInsets())
+                .listRowSeparator(.hidden)
+                .swipeActions(edge: .trailing, allowsFullSwipe: true){
+                    Button(role: .destructive){
+                        Task {
+                            await viewModel.deleteSubscription(item)
+                        }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                    Button{
+                        AddSubscriptionView(viewModel: viewModel, subscriptionToEdit: item)
+                    } label: {
+                        Label("Edit", systemImage: "pencil")
+                    }
+                    .background(Color.blue)
+                    
+                }
+
             }
+            
         }
-       
-        
+        .listStyle(.plain)
     }
 }
 

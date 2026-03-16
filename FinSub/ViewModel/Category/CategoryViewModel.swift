@@ -34,6 +34,23 @@ class CategoryViewModel {
         isLoading = false
     }
     
+    func getOrCreateCategory(name: String) async -> CategoryModel? {
+        isLoading = true
+        defer { isLoading = false }
+        do {
+            let allCategories = try await repository.fetchAllCategory()
+            if let existing = allCategories.first(where: { $0.name == name }) {
+                return existing
+            } else {
+                let newCategory = CategoryModel(name: name)
+                try await repository.addCategory(newCategory)
+                return newCategory
+            }
+        } catch {
+            messageError = error.localizedDescription
+            return nil
+        }
+    }
     
     
 }

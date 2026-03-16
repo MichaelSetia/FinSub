@@ -12,13 +12,13 @@ import SwiftData
 final class CategoryModel{
     var id : UUID
     var name : String
-    var icon : String
-    var color : String
+    var icon : String?
+    var color : String?
      
     @Relationship(inverse: \SubscriptionModel.category) var subscriptions: [SubscriptionModel] = []
     
-    init(id: UUID, name: String, icon: String, color: String) {
-        self.id = id
+    init( name: String, icon: String? = nil, color: String? = nil) {
+        self.id = UUID()
         self.name = name
         self.icon = icon
         self.color = color

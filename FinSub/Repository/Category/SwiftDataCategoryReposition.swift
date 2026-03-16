@@ -10,8 +10,8 @@ import Foundation
 import SwiftData
 
 struct SwiftDataCategoryReposition : CategoryRepository {
-    
-    
+  
+
     private var modelContex : ModelContext
     init(modelContex: ModelContext) {
         self.modelContex = modelContex
@@ -34,6 +34,12 @@ struct SwiftDataCategoryReposition : CategoryRepository {
     
     func updateCategory(_ category: CategoryModel) async throws {
         try modelContex.save()
+    }
+    
+    func fetchCategorybyName(name: String) async throws -> [CategoryModel] {
+        var predictate = #Predicate<CategoryModel>{$0.name == name}
+        let descriptor = FetchDescriptor<CategoryModel>( predicate: predictate)
+        return try modelContex.fetch(descriptor)
     }
     
     

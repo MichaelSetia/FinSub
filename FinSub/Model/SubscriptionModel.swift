@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class SubscriptionModel {
+final class SubscriptionModel : Identifiable {
     var id : UUID
     var name: String
     var price : Decimal

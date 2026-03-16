@@ -11,9 +11,10 @@ struct HomeView: View {
     @Bindable var viewModel : SubscriptionViewModel
     var body: some View {
         VStack (alignment: .leading){
-            ScrollView{
-                ListSubscriptionView(viewModel: viewModel)
-            }
+            
+            ListSubscriptionView(viewModel: viewModel)
+                    
+            
         }
         .task {
             await viewModel.loadSubscription()
