@@ -32,26 +32,32 @@ final class SubscriptionModel : Identifiable {
         switch billingCycle{
             case .month: return price
             case .yearly: return price / 12
+            case .inActive: return 0
         }
     }
     
-    var nextPayment : Date {
-        let calender = Calendar.current
+    var nextPayment: Date {
+        let calendar = Calendar.current
         let now = Date()
         
-        let increment : DateComponents
+      
+        let increment: DateComponents
         switch billingCycle {
-        case .month: increment = DateComponents(month: 1)
-        case .yearly: increment = DateComponents(year: 1)
+        case .month:
+            increment = DateComponents(month: 1)
+        case .yearly:
+            increment = DateComponents(year: 1)
+        case .inActive:
+            return startDate
         }
         
-        var newStartDate = self.startDate
-        while startDate < now{
-            guard let newDate = calender.date(byAdding: increment, to: startDate) else{
+        var nextDate = startDate
+        while nextDate <= now {
+            guard let newDate = calendar.date(byAdding: increment, to: nextDate) else {
                 break
             }
-            newStartDate = newDate
+            nextDate = newDate
         }
-        return newStartDate
+        return nextDate
     }
 }

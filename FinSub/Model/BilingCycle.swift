@@ -10,4 +10,5 @@ import Foundation
 enum BilingCycle : String, Codable, CaseIterable{
     case month
     case yearly
+    case inActive
 }

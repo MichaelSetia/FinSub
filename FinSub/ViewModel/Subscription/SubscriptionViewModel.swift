@@ -21,11 +21,30 @@ final class SubscriptionViewModel{
         self.repository = repository
         self.brandDetection = brandDetection
     }
+
+    var monthlyCost : Decimal = 0.0
     
+    func updateMonthlyCost() async {
+        do {
+            monthlyCost = try await repository.calculateMonthlyCost()
+        } catch {
+            messageError = error.localizedDescription
+        }
+    }
+    
+    var nearestRenewals: [SubscriptionModel] {
+            subscriptions.sorted { $0.nextPayment < $1.nextPayment }
+        }
+        
+    var furthestRenewals: [SubscriptionModel] {
+        subscriptions.sorted { $0.nextPayment > $1.nextPayment }
+    }
+
     func loadSubscription() async {
         isLoading = true
         do{
             subscriptions = try await repository.fetchAllSubscription()
+            await updateMonthlyCost()
             
         }
         catch{
@@ -58,6 +77,7 @@ final class SubscriptionViewModel{
         do {
             try await repository.deletesubscription(subscription)
             subscriptions.removeAll { $0.id == subscription.id }
+            await updateMonthlyCost()
         }
         catch{
             messageError = error.localizedDescription
@@ -71,6 +91,7 @@ final class SubscriptionViewModel{
             let subscription = SubscriptionModel( name: name, price: price, startDate: date, billingCycle: billingCycle, category: category, iconName: iconName)
             try await repository.addSubscription(subscription)
             subscriptions.append(subscription)
+            await updateMonthlyCost()
         }
         catch {
             messageError = error.localizedDescription
@@ -89,8 +110,11 @@ final class SubscriptionViewModel{
 
         do {
             try await repository.updateSubscription(subscription)
+            await updateMonthlyCost()
         } catch {
             messageError = error.localizedDescription
         }
     }
+    
+    
 }

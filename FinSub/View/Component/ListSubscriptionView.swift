@@ -16,7 +16,7 @@ struct ListSubscriptionView: View {
     
     var body: some View {
         List {
-            ForEach(viewModel.subscriptions, id: \.id) { item in
+            ForEach(viewModel.nearestRenewals.prefix(5), id: \.id) { item in
                 CardSubscriptionRow(
                     viewModel: viewModel,
                     subscription: item
@@ -31,9 +31,7 @@ struct ListSubscriptionView: View {
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
-                    Button{
-                        AddSubscriptionView(viewModel: viewModel, subscriptionToEdit: item)
-                    } label: {
+                    NavigationLink(destination: AddSubscriptionView(viewModel: viewModel, EditSubscriptionData: item)) {
                         Label("Edit", systemImage: "pencil")
                     }
                     .background(Color.blue)

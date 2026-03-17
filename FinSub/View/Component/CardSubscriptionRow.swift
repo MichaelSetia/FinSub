@@ -11,37 +11,57 @@ struct CardSubscriptionRow: View {
     
     var brand : String = "netflix"
     
+    let currencyCode = Locale.current.currency?.identifier ?? "USD"
+    
     var body: some View {
         
         VStack(alignment:.leading) {
-            HStack{
-                if let url = viewModel.buildLabelLogoUrl(forBrand: subscription?.iconName ?? brand) {
-                    
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                    } placeholder: {
-                        ProgressView()
+            if let sub = subscription {
+                HStack{
+                    if let url = viewModel.buildLabelLogoUrl(forBrand: sub.iconName ?? brand) {
+                        
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 50, height: 50)
+                        .cornerRadius(10)
+                        
                     }
-                    .frame(width: 50, height: 50)
-                    .cornerRadius(10)
+                    VStack(alignment: .leading){
+                        Text("\(sub.name)")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                        Text("Renewal on \(sub.formattedNextPayment)")
+                            .font(Font.caption.weight(.light))
+                            .foregroundStyle(sub.isNearRenewal ? Color.red : Color.black)
                     
+                        
+                    }
+                    Spacer()
+                    VStack(alignment : .trailing){
+                        Text((sub.price), format:.currency(code: currencyCode) )
+                            .font(.headline)
+                            .fontWeight(.bold)
+                        Text("Monthly")
+                            .font(Font.caption.weight(.light))
+                    }
+                        
+                   
                 }
-                VStack(alignment: .leading){
-                    Text("\(subscription?.name ?? "Netflix")")
-                        .font(.title)
-                    Text("Monthly")
-                }
-                Spacer()
-                Text("\(subscription?.price ?? 10.99)")
-                    .font(.title)
-                    .fontWeight(.bold)
             }
+            else{
+               EmptyView()
+            }
+            
         }
 //        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .padding(.horizontal,8)
+        .padding(.vertical)
+        .clipShape(RoundedRectangle(cornerRadius: 5))
         
     }
 }

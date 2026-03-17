@@ -17,6 +17,8 @@ struct AddSubscriptionView: View {
     @Environment(\.dismiss) var dismiss
     var EditSubscriptionData: SubscriptionModel?
     
+    let currencyCode = Locale.current.currency?.identifier ?? "USD"
+    
     @State private var category: String = "Entertainment"
     let categories = [
             "Entertainment",
@@ -78,7 +80,7 @@ struct AddSubscriptionView: View {
                 }
                 VStack(alignment: .leading, spacing: 5){
                     Text("Price")
-                    TextField("Price", value: $price, format: .currency(code: "USD"))
+                    TextField("Price", value: $price, format: .currency(code: currencyCode))
                         .padding()
                         .background(Color(.systemGray6))
                         .cornerRadius(8)
@@ -146,24 +148,28 @@ struct AddSubscriptionView: View {
                 Button((EditSubscriptionData != nil) ? "Update Subscription" : "Add Subscription"){
                     let categoryModel = CategoryModel(name: category == "Other" ? customCategory : category)
                             if let sub = EditSubscriptionData {
-                                await viewModel.updateSubscription(
-                                    sub,
-                                    name: name,
-                                    price: price,           // Sekarang Decimal
-                                    startDate: startDate,
-                                    billingCycle: billingCycle, 
-                                    category: categoryModel,
-                                    iconName: name
-                                )
+                                Task{
+                                    await viewModel.updateSubscription(
+                                        sub,
+                                        name: name,
+                                        price: price,
+                                        startDate: startDate,
+                                        billingCycle: billingCycle,
+                                        category: categoryModel,
+                                        iconName: name
+                                    )
+                                }
                             } else {
-                                await viewModel.addSubscription(
-                                    name: name,
-                                    price: price,           // Sekarang Decimal
-                                    date: startDate,
-                                    billingCycle: billingCycle,
-//                                    category: categoryModel,
-                                    iconName: name
-                                )
+                                Task{
+                                    await viewModel.addSubscription(
+                                        name: name,
+                                        price: price,
+                                        date: startDate,
+                                        billingCycle: billingCycle,
+                                        category: categoryModel,
+                                        iconName: name
+                                    )
+                                }
                             }
                             dismiss()
                 }
