@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Bindable var viewModel : SubscriptionViewModel
+    var viewModel : SubscriptionViewModel
     
     
     let currencyCode = Locale.current.currency?.identifier ?? "USD"
@@ -21,17 +21,35 @@ struct HomeView: View {
         VStack (alignment: .leading){
             
             LazyVGrid(columns: colum, alignment: .leading, spacing: 10){
+                VStack(alignment:.leading){
+                    Text("Monthly Cost")
+                    Text(viewModel.monthlyCost, format: .currency(code: currencyCode))
+                        .font(.headline)
+                    Text("Yearly Cost")
+                    Text(viewModel.monthlyCost*12, format: .currency(code: currencyCode))
+                        .font(.headline)
+                }
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(height: 100)
+                        .foregroundColor(.white)
+                )
+               
+                
+                
+               
                 ZStack{
                     RoundedRectangle(cornerRadius: 10)
                         .frame(height: 100)
                         .foregroundColor(.white)
-                    Text(viewModel.monthlyCost, format: .currency(code: currencyCode))
-                        .font(.title)
+                    VStack(alignment:.leading){
+                        Text("Yearly")
+                        Text(viewModel.monthlyCost*12, format: .currency(code: currencyCode))
+                            .font(.headline)
+                    }
+                    .padding()
                 }
-               
-//                RoundedRectangle(cornerRadius: 10)
-//                    .frame(height: 100)
-//                    .foregroundColor(.white)
             }
             .padding()
             Spacer()
@@ -53,6 +71,8 @@ struct HomeView: View {
         }
         .task {
             await viewModel.loadSubscription()
+            viewModel.notificationPermission()
+           
         }
         .navigationBarTitle("Home")
         .background(

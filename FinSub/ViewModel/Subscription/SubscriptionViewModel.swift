@@ -45,6 +45,7 @@ final class SubscriptionViewModel{
         do{
             subscriptions = try await repository.fetchAllSubscription()
             await updateMonthlyCost()
+            NotificationService.shared.rescheduleAllNotifications(for: subscriptions)
             
         }
         catch{
@@ -63,6 +64,10 @@ final class SubscriptionViewModel{
         
     }
     
+//    func testNotif() {
+//        NotificationService.shared.testNotification()
+//    }
+//    
     func buildLabelLogoUrl (forBrand brand: String) -> URL? {
         guard let domain = BrandDomainResolve.domain(for: brand )
                 else {return nil}
@@ -78,6 +83,7 @@ final class SubscriptionViewModel{
             try await repository.deletesubscription(subscription)
             subscriptions.removeAll { $0.id == subscription.id }
             await updateMonthlyCost()
+            NotificationService.shared.cancleNotification(for: subscription)
         }
         catch{
             messageError = error.localizedDescription
@@ -92,12 +98,17 @@ final class SubscriptionViewModel{
             try await repository.addSubscription(subscription)
             subscriptions.append(subscription)
             await updateMonthlyCost()
+            NotificationService.shared.shceduleNotification(for: subscription)
         }
         catch {
             messageError = error.localizedDescription
         }
         isLoading = false
         
+    }
+    
+    func notificationPermission(){
+        NotificationService.shared.requestPermission()
     }
     
     func updateSubscription(_ subscription: SubscriptionModel, name: String, price: Decimal, startDate: Date, billingCycle: BilingCycle, category: CategoryModel?, iconName: String?) async {
@@ -111,6 +122,8 @@ final class SubscriptionViewModel{
         do {
             try await repository.updateSubscription(subscription)
             await updateMonthlyCost()
+            NotificationService.shared.cancleNotification(for: subscription)
+            NotificationService.shared.shceduleNotification(for: subscription)
         } catch {
             messageError = error.localizedDescription
         }

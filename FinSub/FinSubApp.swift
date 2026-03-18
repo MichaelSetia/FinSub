@@ -15,6 +15,7 @@ struct FinSubApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+               
         }
         .modelContainer(for:[SubscriptionModel.self, CategoryModel.self])
     }

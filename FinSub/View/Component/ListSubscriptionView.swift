@@ -37,28 +37,16 @@ struct ListSubscriptionView: View {
                     .background(Color.blue)
                     
                 }
-
+                
             }
             
         }
         .listStyle(.plain)
+        .redacted(reason: viewModel.isLoading ? .placeholder : [])
+        .overlay {
+            if viewModel.isLoading {
+                ProgressView() // opsional, tetap tampilkan loading spinner
+            }
+        }
     }
 }
-
-//#Preview {
-//    let container = try! ModelContainer(
-//           for: SubscriptionModel.self,
-//           configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-//       )
-//       
-//       let context = container.mainContext
-//       
-//    let repository = SwiftDataSubscriptionRepository(modelContex: context)
-//       
-//       let viewModel = SubscriptionViewModel(
-//           repository: repository,
-//           brandDetection: BrandDetector(clientId: "preview")
-//       )
-//       
-//    ListSubscriptionView(viewModel:viewModel)
-//}
