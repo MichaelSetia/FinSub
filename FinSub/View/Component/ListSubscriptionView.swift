@@ -14,9 +14,11 @@ struct ListSubscriptionView: View {
     
     @Bindable var viewModel: SubscriptionViewModel
     
+    var subscriptions: [SubscriptionModel]
+    
     var body: some View {
         List {
-            ForEach(viewModel.nearestRenewals.prefix(5), id: \.id) { item in
+            ForEach(subscriptions, id: \.id) { item in
                 CardSubscriptionRow(
                     viewModel: viewModel,
                     subscription: item
@@ -41,7 +43,7 @@ struct ListSubscriptionView: View {
             }
             
         }
-        .listStyle(.plain)
+        .listStyle(.inset)
         .redacted(reason: viewModel.isLoading ? .placeholder : [])
         .overlay {
             if viewModel.isLoading {

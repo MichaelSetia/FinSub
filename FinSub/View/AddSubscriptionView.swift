@@ -10,6 +10,7 @@ import SwiftUI
 struct AddSubscriptionView: View {
     @Bindable var viewModel : SubscriptionViewModel
     @State private var name: String = ""
+    @State private var alternativeName: String = ""
     @State private var price: Decimal = 0
     @State private var startDate : Date = Date()
     @State private var billingCycle : BilingCycle = .month
@@ -72,11 +73,22 @@ struct AddSubscriptionView: View {
                     }
                     VStack(alignment: .leading, spacing: 4){
                         Text("Name")
-                        TextField("Name", text: $name)
-                            .padding()
-                            .background(Color(.systemGray6))
-                            .cornerRadius(8)
+                        HStack {
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(.gray)
+                            TextField("Search Brand", text: $name)
+                        }
+                        .padding(8)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
                     }
+                }
+                VStack(alignment: .leading, spacing: 5){
+                    Text("Alternative Name")
+                    TextField("Ex : My Mom Apple Music", text: $alternativeName)
+                        .padding()
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
                 }
                 VStack(alignment: .leading, spacing: 5){
                     Text("Price")
@@ -86,7 +98,7 @@ struct AddSubscriptionView: View {
                         .cornerRadius(8)
                     
                 }
-                DatePicker("Start Subscription Date", selection: $startDate)
+                DatePicker("Start Subscription Date", selection: $startDate, displayedComponents: .date)
                 
                 HStack{
                     Text("Billing Cycle")
@@ -138,7 +150,7 @@ struct AddSubscriptionView: View {
                 
                 if category == "Other" {
                     
-                    TextField("Custom Category", text: $customCategory)
+                    TextField("Ex : Food", text: $customCategory)
                         .padding()
                         .background(Color(.systemGray6))
                         .cornerRadius(8)
@@ -156,7 +168,8 @@ struct AddSubscriptionView: View {
                                         startDate: startDate,
                                         billingCycle: billingCycle,
                                         category: categoryModel,
-                                        iconName: name
+                                        iconName: name,
+                                        alternativeName: alternativeName
                                     )
                                 }
                             } else {
@@ -167,7 +180,8 @@ struct AddSubscriptionView: View {
                                         date: startDate,
                                         billingCycle: billingCycle,
                                         category: categoryModel,
-                                        iconName: name
+                                        iconName: name,
+                                        alternativeName: alternativeName
                                     )
                                 }
                             }

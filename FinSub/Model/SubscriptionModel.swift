@@ -12,13 +12,14 @@ import SwiftData
 final class SubscriptionModel : Identifiable {
     var id : UUID
     var name: String
+    var alternativeName: String?
     var price : Decimal
     var startDate : Date
     var billingCycle: BilingCycle
     var category: CategoryModel?
     var iconName : String?
     
-    init(name: String, price: Decimal, startDate: Date, billingCycle: BilingCycle, category: CategoryModel? = nil, iconName: String? = nil) {
+    init(name: String, price: Decimal, startDate: Date, billingCycle: BilingCycle, category: CategoryModel? = nil, iconName: String? = nil, alternativeName: String? = nil) {
         self.id = UUID()
         self.name = name
         self.price = price
@@ -26,6 +27,7 @@ final class SubscriptionModel : Identifiable {
         self.billingCycle = billingCycle
         self.category = category
         self.iconName = iconName
+        self.alternativeName = alternativeName
     }
     
     var monthlyCost : Decimal {

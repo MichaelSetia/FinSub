@@ -32,7 +32,7 @@ struct CardSubscriptionRow: View {
                         
                     }
                     VStack(alignment: .leading){
-                        Text("\(sub.name)")
+                        Text("\(sub.alternativeName != nil ? sub.alternativeName! : sub.name)")
                             .font(.headline)
                             .fontWeight(.bold)
                         Text("Renewal on \(sub.formattedNextPayment)")
@@ -58,9 +58,8 @@ struct CardSubscriptionRow: View {
             }
             
         }
-//        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal,8)
-        .padding(.vertical)
+        .padding(.vertical,10)
         .clipShape(RoundedRectangle(cornerRadius: 5))
         
     }

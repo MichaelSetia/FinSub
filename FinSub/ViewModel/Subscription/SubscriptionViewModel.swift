@@ -91,10 +91,10 @@ final class SubscriptionViewModel{
         isLoading = false
     }
     
-    func addSubscription(name: String, price: Decimal, date: Date, billingCycle: BilingCycle, category: CategoryModel? = nil, iconName: String? = nil ) async {
+    func addSubscription(name: String, price: Decimal, date: Date, billingCycle: BilingCycle, category: CategoryModel? = nil, iconName: String? = nil, alternativeName : String? = nil ) async {
         isLoading = true
         do {
-            let subscription = SubscriptionModel( name: name, price: price, startDate: date, billingCycle: billingCycle, category: category, iconName: iconName)
+            let subscription = SubscriptionModel( name: name, price: price, startDate: date, billingCycle: billingCycle, category: category, iconName: iconName, alternativeName: alternativeName)
             try await repository.addSubscription(subscription)
             subscriptions.append(subscription)
             await updateMonthlyCost()
@@ -111,13 +111,14 @@ final class SubscriptionViewModel{
         NotificationService.shared.requestPermission()
     }
     
-    func updateSubscription(_ subscription: SubscriptionModel, name: String, price: Decimal, startDate: Date, billingCycle: BilingCycle, category: CategoryModel?, iconName: String?) async {
+    func updateSubscription(_ subscription: SubscriptionModel, name: String, price: Decimal, startDate: Date, billingCycle: BilingCycle, category: CategoryModel?, iconName: String?, alternativeName: String?) async {
         subscription.name = name
         subscription.price = price
         subscription.startDate = startDate
         subscription.billingCycle = billingCycle
         subscription.category = category
         subscription.iconName = iconName
+        subscription.alternativeName = alternativeName
 
         do {
             try await repository.updateSubscription(subscription)

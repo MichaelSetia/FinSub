@@ -19,51 +19,20 @@ struct HomeView: View {
     ]
     var body: some View {
         VStack (alignment: .leading){
+            HeaderHomeView(viewModel: viewModel)
             
-            LazyVGrid(columns: colum, alignment: .leading, spacing: 10){
-                VStack(alignment:.leading){
-                    Text("Monthly Cost")
-                    Text(viewModel.monthlyCost, format: .currency(code: currencyCode))
-                        .font(.headline)
-                    Text("Yearly Cost")
-                    Text(viewModel.monthlyCost*12, format: .currency(code: currencyCode))
-                        .font(.headline)
-                }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(height: 100)
-                        .foregroundColor(.white)
-                )
-               
-                
-                
-               
-                ZStack{
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(height: 100)
-                        .foregroundColor(.white)
-                    VStack(alignment:.leading){
-                        Text("Yearly")
-                        Text(viewModel.monthlyCost*12, format: .currency(code: currencyCode))
-                            .font(.headline)
-                    }
-                    .padding()
-                }
-            }
-            .padding()
             Spacer()
             VStack(alignment:.leading){
                 HStack{
                     Text("List Subscription")
                         .font(Font.headline)
                     Spacer()
-                    NavigationLink(destination : AddSubscriptionView(viewModel: viewModel)){
+                    NavigationLink(destination : AllSubcriptionView(viewModel: viewModel)){
                         Text("See All")
                             .font(Font.caption)
                     }
                 }
-                ListSubscriptionView(viewModel: viewModel)
+                ListSubscriptionView(viewModel: viewModel, subscriptions: Array(viewModel.nearestRenewals.prefix(5)))
             }
             .padding()
             .background(.white)
@@ -77,7 +46,7 @@ struct HomeView: View {
         .navigationBarTitle("Home")
         .background(
             VStack{
-                Color.blue
+                Color.gray
                 Color.white
             }
                 .ignoresSafeArea()
