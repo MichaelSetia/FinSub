@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import CalendarView
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -19,15 +20,30 @@ struct ContentView: View {
         SubscriptionViewModel(repository:repository,brandDetection: BrandDetector(clientId: "1idfsfExBvFLlotLbUE"))
         
     }
+    
+
+
     var body: some View {
-        TabView{
-            NavigationStack {
-                HomeView(viewModel: viewModel)
+        TabView {
+                NavigationStack {
+                    HomeView(viewModel: viewModel)
+                }
+                .tabItem {
+                    Label("Home", systemImage: "circle")
+                }
+
+                NavigationStack {
+                    VStack{
+                        CalendarSubscription(viewModel: viewModel)
+                    }
+                    .navigationTitle("Calendar")
+                    .padding()
+                    
+                }
+                .tabItem {
+                    Label("Calendar", systemImage: "circle")
+                }
             }
-            .tabItem{
-               Label("Home", systemImage: "circle")
-            }
-        }
         
     }
 }
