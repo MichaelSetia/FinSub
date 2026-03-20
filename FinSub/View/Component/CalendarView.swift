@@ -84,10 +84,10 @@ struct DayCalendarView : View {
                             .foregroundColor(.secondary)
                     }
                 }
-                .frame(height: 30)  // sesuaikan height
+                .frame(height: 20)  // sesuaikan height
             }
             else {
-                Spacer().frame(height: 30)
+                Spacer().frame(height: 20)
             }
                
         }

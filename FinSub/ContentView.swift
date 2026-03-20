@@ -33,7 +33,7 @@ struct ContentView: View {
                 }
 
                 NavigationStack {
-                    VStack{
+                    ScrollView{
                         CalendarSubscription(viewModel: viewModel)
                     }
                     .navigationTitle("Calendar")
