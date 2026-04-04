@@ -78,26 +78,52 @@ Full CRUD control over all your subscriptions:
 ```
 FinSub/
 │
+├── App/
+│   ├── FinSubApp.swift
+│   └── ContentView.swift
+│
 ├── Models/
-│   └── SubscriptionModel.swift          # Core data model
+│   ├── SubscriptionModel.swift
+│   ├── BillingCycle.swift
+│   └── CategoryModel.swift
 │
 ├── ViewModels/
-│   └── SubscriptionViewModel.swift      # Business logic & state management
+│   └── SubscriptionViewModel.swift
 │
 ├── Views/
-│   ├── HomeView.swift                   # Dashboard screen
-│   ├── AddSubscriptionView.swift        # Add/Edit subscription form
-│   ├── ListSubscriptionView.swift       # Subscription list screen
-│   └── CardSubscriptionRow.swift        # Reusable subscription card component
-│
-├── Services/
-│   └── NotificationService.swift        # Renewal reminder scheduling
+│   ├── Screens/
+│   │   ├── HomeView.swift
+│   │   ├── AddSubscriptionView.swift
+│   │   └── AllSubscriptionView.swift
+│   │
+│   └── Components/
+│       ├── CardSubscriptionRow.swift
+│       ├── ListSubscriptionView.swift
+│       ├── HeaderHomeView.swift
+│       └── CalendarView.swift
 │
 ├── Repository/
-│   └── SwiftDataSubscriptionRepository.swift  # SwiftData persistence layer
+│   ├── Protocols/
+│   │   └── SubscriptionRepository.swift
+│   │
+│   ├── Implementations/
+│   │   ├── SwiftDataSubscriptionRepository.swift
+│   │   └── SwiftDataCategoryRepository.swift
+│
+├── Services/
+│   ├── NotificationService.swift
+│   ├── BrandDetector.swift
+│   ├── BrandDetectorProtocol.swift
+│   └── BrandDomainResolve.swift
+│
+├── Resources/
+│   └── PopularBrands.swift
+│
+├── Extensions/
+│   └── SubscriptionModelExtension.swift
 │
 └── Utils/
-    └── BrandDetector.swift              # Auto logo fetching utility
+    └── Helpers.swift
 ```
 
 ---
