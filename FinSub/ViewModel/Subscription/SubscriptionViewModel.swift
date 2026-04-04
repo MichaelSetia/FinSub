@@ -115,7 +115,7 @@ final class SubscriptionViewModel{
         subscription.name = name
         subscription.price = price
         subscription.startDate = startDate
-        subscription.billingCycle = billingCycle
+        subscription.billingCycleRaw = billingCycle.rawString  // UBAH INI
         subscription.category = category
         subscription.iconName = iconName
         subscription.alternativeName = alternativeName

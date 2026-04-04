@@ -135,9 +135,54 @@ struct FullCalendarView : View {
            return cal.component(.day, from: now)
        }
     
-       private func subs(for day: Int) -> [SubscriptionModel] {
-           subscriptions.filter {Calendar.current.component(.day, from: $0.nextPayment) == day }
-       }
+    
+        private func isPaymentDay(sub: SubscriptionModel, day: Int, month: Int, year: Int) -> Bool {
+            let calendar = Calendar.current
+            let startDay = calendar.component(.day, from: sub.startDate)
+            let startMonth = calendar.component(.month, from: sub.startDate)
+            let startYear = calendar.component(.year, from: sub.startDate)
+            
+            // Hanya tampilkan jika hari cocok dengan startDate
+            guard day == startDay else { return false }
+            
+            // Harus setelah atau sama dengan startDate
+            let targetComponents = DateComponents(year: year, month: month, day: day)
+            guard let targetDate = calendar.date(from: targetComponents),
+                  targetDate >= sub.startDate else { return false }
+            
+            switch sub.billingCycle {
+            case .monthly:
+                // Setiap bulan di hari yang sama
+                return true
+                
+            case .threemonth:
+                // Setiap 3 bulan
+                let monthDiff = (year - startYear) * 12 + (month - startMonth)
+                return monthDiff % 3 == 0
+                
+            case .sixmonth:
+                // Setiap 6 bulan
+                let monthDiff = (year - startYear) * 12 + (month - startMonth)
+                return monthDiff % 6 == 0
+                
+            case .yearly:
+                // Setiap tahun di bulan & hari yang sama
+                return month == startMonth
+                
+            case .custom(let days):
+                // Hitung berdasarkan interval hari
+                guard let targetDate = calendar.date(from: targetComponents) else { return false }
+                let diff = calendar.dateComponents([.day], from: sub.startDate, to: targetDate).day ?? 0
+                return diff >= 0 && diff % days == 0
+            }
+        }
+    
+        private func subs(for day: Int) -> [SubscriptionModel] {
+            subscriptions.filter { sub in
+                
+                isPaymentDay(sub: sub, day: day, month: month, year: year)
+            }
+        }
     
        var body: some View {
            VStack(spacing: 4) {

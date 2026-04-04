@@ -13,7 +13,7 @@ struct AddSubscriptionView: View {
     @State private var alternativeName: String = ""
     @State private var price: Decimal = 0
     @State private var startDate : Date = Date()
-    @State private var billingCycle : BilingCycle = .month
+    @State private var billingCycle : BilingCycle = .monthly
     @State private var customCategory: String = ""
     @Environment(\.dismiss) var dismiss
     var EditSubscriptionData: SubscriptionModel?
@@ -103,12 +103,11 @@ struct AddSubscriptionView: View {
                 HStack{
                     Text("Billing Cycle")
                     Spacer()
-                    Picker("Biling Cycle",selection: $billingCycle) {
-                        ForEach(BilingCycle.allCases, id:\.self){ cycle in
-                            Text(cycle.rawValue.capitalized)
+                    Picker("Billing Cycle", selection: $billingCycle) {
+                        ForEach(BilingCycle.allCases, id: \.rawString) { cycle in
+                            Text(cycle.displayName)
                                 .tag(cycle)
                         }
-                        
                     }
                 }
                 
@@ -157,35 +156,33 @@ struct AddSubscriptionView: View {
                 }
 
                 Spacer()
-                Button((EditSubscriptionData != nil) ? "Update Subscription" : "Add Subscription"){
+                Button((EditSubscriptionData != nil) ? "Update Subscription" : "Add Subscription") {
                     let categoryModel = CategoryModel(name: category == "Other" ? customCategory : category)
-                            if let sub = EditSubscriptionData {
-                                Task{
-                                    await viewModel.updateSubscription(
-                                        sub,
-                                        name: name,
-                                        price: price,
-                                        startDate: startDate,
-                                        billingCycle: billingCycle,
-                                        category: categoryModel,
-                                        iconName: name,
-                                        alternativeName: alternativeName
-                                    )
-                                }
-                            } else {
-                                Task{
-                                    await viewModel.addSubscription(
-                                        name: name,
-                                        price: price,
-                                        date: startDate,
-                                        billingCycle: billingCycle,
-                                        category: categoryModel,
-                                        iconName: name,
-                                        alternativeName: alternativeName
-                                    )
-                                }
-                            }
-                            dismiss()
+                    Task {
+                        if let sub = EditSubscriptionData {
+                            await viewModel.updateSubscription(
+                                sub,
+                                name: name,
+                                price: price,
+                                startDate: startDate,
+                                billingCycle: billingCycle,
+                                category: categoryModel,
+                                iconName: name,
+                                alternativeName: alternativeName
+                            )
+                        } else {
+                            await viewModel.addSubscription(
+                                name: name,
+                                price: price,
+                                date: startDate,
+                                billingCycle: billingCycle,
+                                category: categoryModel,
+                                iconName: name,
+                                alternativeName: alternativeName
+                            )
+                        }
+                        dismiss() // PINDAH ke dalam Task, setelah await selesai
+                    }
                 }
                 .buttonStyle(.borderedProminent)
                 .buttonSizing(.flexible)
@@ -198,6 +195,7 @@ struct AddSubscriptionView: View {
         
     }
 }
+
 
 //#Preview {
 //    AddSubscriptionView()

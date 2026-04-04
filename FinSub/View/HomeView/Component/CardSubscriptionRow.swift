@@ -46,7 +46,7 @@ struct CardSubscriptionRow: View {
                         Text((sub.price), format:.currency(code: currencyCode) )
                             .font(.headline)
                             .fontWeight(.bold)
-                        Text("Monthly")
+                        Text(sub.billingCycle.displayName)
                             .font(Font.caption.weight(.light))
                     }
                         
